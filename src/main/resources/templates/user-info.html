@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div th:insert="~{fragments/header :: logout}"></div>
+<fieldset>
+    <legend><h2 class="title-style">Edit user</h2></legend>
+    <br>
+    <form action="/admin/save-user" method="post" th:object="${user}">
+        Username:
+        <input type="text" th:value="*{username}" name="username">
+        <br> Password:
+        <input type="text" th:value="*{password}" name="password">
+        <br> First name:
+        <input type="text" th:value="*{firstName}" name="firstName">
+        <br> Last name:
+        <input type="text" th:value="*{lastName}" name="lastName">
+        <br> Age:
+        <input type="text" th:value="*{age}" name="age">
+        <br> Country:
+        <input type="text" th:value="*{country}" name="country">
+        <br> Roles:
+        <div th:each="role : ${roles}">
+            <label><input type="checkbox" th:name="${role}">
+                <label th:text="${role}"></label></label>
+        </div>
+        <input type="hidden" th:value="*{id}" name="id">
+        <button type="submit">Save</button>
+    </form>
+</fieldset>
+</body>
+</html>

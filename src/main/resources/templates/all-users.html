@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<style>
+    .content-table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        min-width: 400px;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+        font-family: "Comic Sans MS";
+    }
+
+    .content-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .content-table th,
+    .content-table td {
+        padding: 3px 12px;
+    }
+
+    .content-table tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .content-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
+
+    .title-style {
+        border-collapse: collapse;
+        margin: 25px 0;
+        width: 490px;
+        border-bottom: 2px solid #009879;
+        font-family: "Comic Sans MS";
+    }
+</style>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:insert="~{fragments/header :: logout}"></div>
+<h2 class="title-style">All users: </h2>
+<table class="content-table">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Age</th>
+        <th>Country</th>
+        <th>Roles</th>
+        <th colspan="2" style="text-align: center;">Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${userList}">
+        <td th:text="${user.username}">username</td>
+        <td th:text="${user.password}">password</td>
+        <td th:text="${user.firstName}">firstName</td>
+        <td th:text="${user.lastName}">lastName</td>
+        <td th:text="${user.age}">age</td>
+        <td th:text="${user.country}">country</td>
+        <td th:text="${user.roles}">roles</td>
+        <td>
+            <form action="/admin/delete-user" method="post">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <form action="/admin/updateInfo" method="post">
+                <input type="hidden" name="id" th:value="${user.id}">
+                <button type="submit">Update</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<form action="/admin/new-user" method="post">
+    <button type="submit">Add new user</button>
+</form>
+</body>
+</html>
