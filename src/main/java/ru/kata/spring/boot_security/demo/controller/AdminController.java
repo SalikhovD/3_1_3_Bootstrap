@@ -53,6 +53,10 @@ public class AdminController {
         return "user-info";
     }
 
+    //Тут принимаются все поля формы в виде мапы, вынимается оттуда сет ключей (имен полей формы)
+    //и сравнивается с содержимым сета из всех существующих ролей Role.values().
+    //если есть совпадающий элемент в обоих списках, значит это отмеченная во view роль,
+    //которую мы добавляем пользователю
     @PostMapping("/save-user")
     public String saveUser(@ModelAttribute("user") User user, @RequestParam Map<String, String> form) {
         Set<Role> roleSet = new HashSet<>();
