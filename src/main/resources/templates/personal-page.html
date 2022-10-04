@@ -47,7 +47,7 @@
                             <td th:text="${principalUser.lastName}">lastName</td>
                             <td th:text="${principalUser.age}">age</td>
                             <td th:text="${principalUser.username}">username</td>
-                            <td th:text="${principalUser.roles}">roles</td>
+                            <td th:text="${#strings.listJoin(principalUser.roles.![name], ' ')}"></td>
                         </tr>
                         </tbody>
                     </table>
