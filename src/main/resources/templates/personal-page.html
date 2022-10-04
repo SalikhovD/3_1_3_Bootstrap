@@ -1,71 +1,70 @@
-<!DOCTYPE html>
-<style>
-    .content-table {
-        border-collapse: collapse;
-        margin: 25px 0;
-        min-width: 400px;
-        border-radius: 5px 5px 0 0;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        font-family: "Comic Sans MS";
-    }
-
-    .content-table thead tr {
-        background-color: #009879;
-        color: #ffffff;
-        text-align: left;
-        font-weight: bold;
-    }
-
-    .content-table th,
-    .content-table td {
-        padding: 3px 12px;
-    }
-
-    .content-table tr {
-        border-bottom: 1px solid #dddddd;
-    }
-
-    .content-table tbody tr:last-of-type {
-        border-bottom: 2px solid #009879;
-    }
-
-    .title-style {
-        border-collapse: collapse;
-        margin: 25px 0;
-        width: 490px;
-        border-bottom: 2px solid #009879;
-        font-family: "Comic Sans MS";
-    }
-</style>
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+          crossorigin="anonymous">
+</head>
 <body>
-<div th:insert="~{fragments/header :: logout}"></div>
-<h2 class="title-style">Personal information: </h2>
-<table class="content-table">
-    <thead>
-    <tr>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Age</th>
-        <th>Country</th>
-        <th>Roles</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td th:text="${user.username}">username</td>
-        <td th:text="${user.password}">password</td>
-        <td th:text="${user.firstName}">firstName</td>
-        <td th:text="${user.lastName}">lastName</td>
-        <td th:text="${user.age}">age</td>
-        <td th:text="${user.country}">country</td>
-        <td th:text="${user.roles}">roles</td>
-    </tr>
-    </tbody>
-</table>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container-fluid p-0 text-left">
+    <div class="row">
+        <div class="col-2 p-0">
+            <br>
+            <ul class="nav nav-pills flex-column" aria-orientation="vertical">
+                <li sec:authorize="hasAuthority('ADMIN')" class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="/user">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 text-bg-light p-4 vh-100">
+            <p class="h1">User information-page</p>
+            <div class="border rounded-1">
+                <p class="h5 p-3 m-0">About user</p>
+                <div class="bg-white p-3  border-top">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr class="border-top">
+                            <th>Id</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="border-top">
+                            <td th:text="${principalUser.id}">username</td>
+                            <td th:text="${principalUser.firstName}">firstName</td>
+                            <td th:text="${principalUser.lastName}">lastName</td>
+                            <td th:text="${principalUser.age}">age</td>
+                            <td th:text="${principalUser.username}">username</td>
+                            <td th:text="${principalUser.roles}">roles</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

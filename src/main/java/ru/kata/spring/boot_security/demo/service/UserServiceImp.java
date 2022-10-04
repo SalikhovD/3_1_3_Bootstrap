@@ -1,7 +1,8 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
@@ -20,30 +20,22 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImp implements UserService, UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    UserServiceImp(UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    private final UserDao userDao;
-
-    @Autowired
-    UserServiceImp(UserDao userDao) {
-        this.userDao = userDao;
     }
 
     @Transactional
     @Override
     public void add(User user) {
-        userDao.add(user);
+        userRepository.save(user);
     }
 
     @Transactional
     @Override
     public void deleteUser(Long id) {
-        userDao.deleteUser(id);
+        userRepository.deleteById(id);
     }
 
     @Transactional
@@ -55,13 +47,13 @@ public class UserServiceImp implements UserService, UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public List<User> listUsers() {
-        return userDao.listUsers();
+        return userRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
     public User getUser(Long id) {
-        return userDao.getUser(id);
+        return userRepository.findById(id).get();
     }
 
     public User findByUsername(String username) {
@@ -84,27 +76,26 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.name())).collect(Collectors.toList());
     }
 
+    @EventListener(ApplicationReadyEvent.class)
     public void preCreateUsers() {
-        if (findByUsername("admin") == null) {
+        if (findByUsername("admin@mail.ru") == null) {
             User user = new User();
-            user.setUsername("admin");
+            user.setUsername("admin@mail.ru");
             user.setPassword("admin");
-            user.setFirstName("Dima");
-            user.setLastName("Salikhov");
-            user.setAge(25);
-            user.setCountry("Russia");
+            user.setFirstName("admin");
+            user.setLastName("admin");
+            user.setAge(35);
             Set<Role> roles = new HashSet<>(List.of(Role.values()));
             user.setRoles(roles);
             saveOrUpdate(user);
         }
-        if (findByUsername("user") == null) {
+        if (findByUsername("user@mail.ru") == null) {
             User user = new User();
-            user.setUsername("user");
+            user.setUsername("user@mail.ru");
             user.setPassword("user");
-            user.setFirstName("Alex");
-            user.setLastName("Loginov");
+            user.setFirstName("user");
+            user.setLastName("user");
             user.setAge(30);
-            user.setCountry("Russia");
             user.setRoles(Collections.singleton(Role.USER));
             saveOrUpdate(user);
         }

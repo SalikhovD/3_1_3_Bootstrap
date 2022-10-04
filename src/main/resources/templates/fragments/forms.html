@@ -1,0 +1,256 @@
+<div th:fragment="newUser" class="border rounded-1">
+    <p class="h5 p-3 m-0">Add new user</p>
+    <div class="bg-white p-3  m-0 border-top justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-6 row justify-content-center text-center">
+                <form action="/admin/save-user" method="post" th:object="${newUser}" class="col-7">
+                    <div class="m-3">
+                        <b>First name</b>
+                        <input class="form-control p-1" type="text" placeholder="First name"
+                               th:value="*{firstName}"
+                               name="firstName">
+                    </div>
+                    <div class="m-3">
+                        <b>Last name</b>
+                        <input class="form-control p-1" type="text" placeholder="Last name"
+                               th:value="*{lastName}"
+                               name="lastName">
+                    </div>
+                    <div class="m-3">
+                        <b>Age</b>
+                        <input class="form-control p-1" type="text" placeholder="Age"
+                               th:value="*{age}"
+                               name="age">
+                    </div>
+                    <div class="m-3">
+                        <b>Email</b>
+                        <input class="form-control p-1" type="email" placeholder="Email"
+                               th:value="*{username}"
+                               name="username"
+                               required>
+                    </div>
+                    <div class="m-3">
+                        <b>Password</b>
+                        <input class="form-control p-1" type="password" placeholder="Password"
+                               th:value="*{password}"
+                               name="password"
+                               required>
+                    </div>
+                    <div class="m-3">
+                        <b>Role</b>
+                        <select name="roles" class="form-select p-1" required multiple size="2">
+                            <option class="m-0" th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+                        </select>
+                    </div>
+                    <input type="hidden" th:value="*{id}" name="id">
+                    <button type="submit" class="btn btn-success">Add new user</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<form th:fragment="editUser" action="/admin/save-user" method="post" th:id="'editUserForm' + *{id}">
+    <div class="m-3">
+        <b>ID</b>
+        <input class="form-control p-1" type="text"
+               th:value="*{id}"
+               name="id"
+               disabled>
+        <input type="hidden" th:value="*{id}" name="id">
+    </div>
+    <div class="m-3">
+        <b>First name</b>
+        <input class="form-control p-1" type="text" placeholder="First name"
+               th:value="*{firstName}"
+               name="firstName">
+    </div>
+    <div class="m-3">
+        <b>Last name</b>
+        <input class="form-control p-1" type="text" placeholder="Last name"
+               th:value="*{lastName}"
+               name="lastName">
+    </div>
+    <div class="m-3">
+        <b>Age</b>
+        <input class="form-control p-1" type="number" placeholder="Age"
+               th:value="*{age}"
+               name="age">
+    </div>
+    <div class="m-3">
+        <b>Email</b>
+        <input class="form-control p-1" type="email" placeholder="Email"
+               th:value="*{username}"
+               name="username"
+               required>
+    </div>
+    <div class="m-3">
+        <b>Password</b>
+        <input class="form-control p-1" type="password" placeholder="Password"
+               th:value="*{password}"
+               name="password"
+               required>
+    </div>
+    <div class="m-3">
+        <b>Role</b>
+        <select name="roles" class="form-select" required multiple size="2">
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"
+                    th:selected="${#arrays.contains(user.roles, role)}"></option>
+        </select>
+    </div>
+</form>
+
+
+<form th:fragment="deleteUser" action="/admin/delete-user" method="post" th:id="'deleteUserForm' + *{id}">
+    <div class="m-3">
+        <b>ID</b>
+        <input class="form-control p-1" type="text" placeholder="ID"
+               th:value="*{id}"
+               name="id"
+               disabled>
+    </div>
+    <div class="m-3">
+        <b>First name</b>
+        <input class="form-control p-1" type="text" placeholder="First name"
+               th:value="*{firstName}"
+               name="firstName"
+               disabled>
+    </div>
+    <div class="m-3">
+        <b>Last name</b>
+        <input class="form-control p-1" type="text" placeholder="Last name"
+               th:value="*{lastName}"
+               name="lastName"
+               disabled>
+    </div>
+    <div class="m-3">
+        <b>Age</b>
+        <input class="form-control p-1" type="number" placeholder="Age"
+               th:value="*{age}"
+               name="age"
+               disabled>
+    </div>
+    <div class="m-3">
+        <b>Email</b>
+        <input class="form-control p-1" type="email" placeholder="Email"
+               th:value="*{username}"
+               name="username"
+               disabled>
+    </div>
+    <div class="m-3">
+        <b>Password</b>
+        <input class="form-control p-1" type="password" placeholder="Password"
+               th:value="*{password}"
+               name="password"
+               disabled>
+    </div>
+    <div class="m-3">
+        <b>Role</b>
+        <select name="roles" class="form-select" required multiple size="2" disabled>
+            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"
+                    th:selected="${#arrays.contains(user.roles, role)}">
+            </option>
+        </select>
+    </div>
+</form>
+
+
+<div th:fragment="editUserModal" class="modal fade" th:id="'editUserModal' + *{id}" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true"
+     th:object="${user}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body row justify-content-center">
+                <div class="col-7 text-center justify-content-center">
+                    <div th:insert="~{fragments/forms :: editUser}"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button type="submit" th:form="'editUserForm' + *{id}" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="deleteUserModal" class="modal fade" th:id="'deleteUserModal' + *{id}" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true"
+     th:object="${user}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body row justify-content-center">
+                <div class="col-7 text-center justify-content-center">
+                    <div th:insert="~{fragments/forms :: deleteUser}"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <form action="/admin/delete-user" method="post">
+                    <input type="hidden" name="id" th:value="*{id}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="allUsers" class="border rounded-1">
+    <p class="h5 p-3 m-0">All users</p>
+    <div class="bg-white p-3  border-top">
+        <table class="table table-striped">
+            <thead>
+            <tr class="border-top">
+                <th>Id</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-top" th:each="user : ${userList}">
+
+                <div th:insert="~{fragments/forms :: editUserModal}"></div>
+                <div th:insert="~{fragments/forms :: deleteUserModal}"></div>
+
+                <td th:text="${user.id}">username</td>
+                <td th:text="${user.firstName}">firstName</td>
+                <td th:text="${user.lastName}">lastName</td>
+                <td th:text="${user.age}">age</td>
+                <td th:text="${user.username}">username</td>
+                <td th:text="${#strings.listJoin(user.roles.![name], ' ')}"></td>
+                <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            th:data-bs-target="'#editUserModal' + ${user.id}">Edit
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                            th:data-bs-target="'#deleteUserModal' + ${user.id}">Delete
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

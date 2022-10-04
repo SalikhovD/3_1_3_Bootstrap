@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import javax.sql.DataSource;
 
@@ -39,8 +40,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .formLogin().successHandler(successUserHandler)
                     .permitAll()
                 .and()
+                    .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+                .and()
                     .logout()
                     .permitAll();
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return new MyAccessDeniedHandler();
     }
 
     @Bean

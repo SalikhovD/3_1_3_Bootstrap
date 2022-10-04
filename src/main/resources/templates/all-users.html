@@ -1,87 +1,63 @@
-<!DOCTYPE html>
-<style>
-    .content-table {
-        border-collapse: collapse;
-        margin: 25px 0;
-        min-width: 400px;
-        border-radius: 5px 5px 0 0;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-        font-family: "Comic Sans MS";
-    }
-
-    .content-table thead tr {
-        background-color: #009879;
-        color: #ffffff;
-        text-align: left;
-        font-weight: bold;
-    }
-
-    .content-table th,
-    .content-table td {
-        padding: 3px 12px;
-    }
-
-    .content-table tr {
-        border-bottom: 1px solid #dddddd;
-    }
-
-    .content-table tbody tr:last-of-type {
-        border-bottom: 2px solid #009879;
-    }
-
-    .title-style {
-        border-collapse: collapse;
-        margin: 25px 0;
-        width: 490px;
-        border-bottom: 2px solid #009879;
-        font-family: "Comic Sans MS";
-    }
-</style>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
 <body>
-<div th:insert="~{fragments/header :: logout}"></div>
-<h2 class="title-style">All users: </h2>
-<table class="content-table">
-    <thead>
-    <tr>
-        <th>Username</th>
-        <th>Password</th>
-        <th>Name</th>
-        <th>Surname</th>
-        <th>Age</th>
-        <th>Country</th>
-        <th>Roles</th>
-        <th colspan="2" style="text-align: center;">Options</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${userList}">
-        <td th:text="${user.username}">username</td>
-        <td th:text="${user.password}">password</td>
-        <td th:text="${user.firstName}">firstName</td>
-        <td th:text="${user.lastName}">lastName</td>
-        <td th:text="${user.age}">age</td>
-        <td th:text="${user.country}">country</td>
-        <td th:text="${user.roles}">roles</td>
-        <td>
-            <form action="/admin/delete-user" method="post">
-                <input type="hidden" name="id" th:value="${user.id}">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-        <td>
-            <form action="/admin/updateInfo" method="post">
-                <input type="hidden" name="id" th:value="${user.id}">
-                <button type="submit">Update</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container-fluid p-0 text-left">
+    <div class="row">
+        <div class="col-2 p-0">
+            <br>
+            <ul class="nav nav-pills flex-column" aria-orientation="vertical">
+                <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
+                    <a class="nav-link active" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user">User</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-10 text-bg-light p-4 vh-100">
+            <p class="h1">Admin panel</p>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#all-users-tab">
+                        Users table
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#new-user-tab">
+                        New user
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane show active" id="all-users-tab">
+                    <div th:insert="~{fragments/forms :: allUsers}"></div>
+                </div>
+                <div class="tab-pane" id="new-user-tab">
+                    <div th:insert="~{fragments/forms :: newUser}"></div>
+                </div>
+            </div>
+        </div>
 
-<form action="/admin/new-user" method="post">
-    <button type="submit">Add new user</button>
-</form>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

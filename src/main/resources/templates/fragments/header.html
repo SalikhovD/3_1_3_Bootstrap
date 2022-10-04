@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div th:fragment="logout">
-    <form action="/logout" method="post">
-        <input type="submit" value="Sing out">
-    </form>
-</div>
 
-</body>
-</html>
+
+
+<nav th:fragment="header" class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <label class="navbar-brand mb-0 h1"><b><span th:text="${principalUser.username}"/></b> with roles: <span th:text="${#strings.listJoin(principalUser.roles.![name], ' ')}"/></label>
+        <a class="navbar-brand" href="/logout">Logout</a>
+    </div>
+</nav>
